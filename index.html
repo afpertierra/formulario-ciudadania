@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Ciudadanía</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .company-banner {
+            background: linear-gradient(to right, #002868cc, #bf0a30cc), 
+                        url('banner3.jpg') center/cover;
+            height: 120px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .company-logo {
+            height: 80px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        @media (max-width: 768px) {
+            .company-banner {
+                height: 100px;
+                padding: 0.5rem 0;
+            }
+            .company-logo {
+                height: 60px;
+            }
+            .company-banner h1 {
+                font-size: 1.25rem;
+            }
+        }
+        
+        ::placeholder {
+            font-style: italic;
+            opacity: 0.7 !important;
+        }
+        
+        .form-label-nowrap {
+            white-space: nowrap;
+            font-size: 0.95em; /* Ajuste opcional */
+        }
+
+        .direccion-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+    
+    
+    </style>
+</head>
+
+<body>
+    <!-- Banner/Logo -->
+    <header class="company-banner">
+        <div class="text-center py-4">
+            <h1 class="text-white display-3">Formulario para Ciudadanía</h1>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container mt-3 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <!-- Aviso Legal -->
+                <div id="aviso">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">⚠️ AVISO IMPORTANTE</h2>
+                            <div class="text-muted mb-4">
+                                <p class="fw-bold">El propósito de este formulario es recopilar parte de la información necesaria para completar la solicitud de naturalización estadounidense (Formulario N-400).</p>
+                
+                                <p class="alert alert-warning">Este formulario <u>NO</u> es un documento oficial de USCIS.<br>
+                                Sus respuestas serán recibidas por un tercero, no por USCIS.</p>
+                
+                                <p>La persona que le envió este formulario <u>NO</u> es abogado/a y la información proporcionada no debe interpretarse como asesoramiento legal.</p>
+                
+                                <p>Este formulario no incluye todas las preguntas del Formulario N-400. Solo se recopilarán respuestas que requieren texto para evitar errores al transcribir la información.</p>
+                
+                                <p>Además de completar este formulario, se le solicitará que:</p>
+                                <ul>
+                                    <li>Proporcione copias de ciertos documentos legales</li>
+                                    <li>Responda preguntas adicionales necesarias para completar su solicitud</li>
+                                </ul>
+                
+                                <div class="alert alert-info mt-3">
+                                    <p class="mb-0">La información que proporcione puede ser sensible. Sin embargo, esta:</p>
+                                    <ul class="mb-0">
+                                        <li>NO será divulgada</li>
+                                        <li>NO será compartida con terceros</li>
+                                        <li>NO será utilizada para ningún otro propósito distinto al descrito en este aviso</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-3">
+                                <button onclick="mostrarSeccion('datosPersonales')" 
+                                        class="btn btn-primary btn-lg">
+                                    ACEPTO
+                                </button>
+                                <button onclick="window.location.href='https://google.com'" 
+                                        class="btn btn-outline-danger btn-lg">
+                                    NO ACEPTO
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secciones del Formulario -->
+                <div id="formulario-principal" class="d-none">
+                    <!-- Datos Personales -->
+                    <div id="datosPersonales" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">📝 Datos Personales</h3>
+                    
+                                <!-- Nombre Legal -->
+                                <div class="mb-4">
+                                    <label class="form-label">Nombre Legal Completo</label>
+                                    <input type="text" class="form-control" 
+                                           placeholder="Ej: Juan Carlos Pérez García" required>
+                                    <small class="form-text text-muted">Su nombre tal como aparece en su certificado de nacimiento</small>
+                                </div>
+                    
+                                <!-- Nombres Anteriores -->
+                                <div class="mb-4">
+                                    <label class="form-label">¿Ha usado otros nombres anteriormente?</label>
+                                    <select class="form-select" id="nombresAnteriores" 
+                                            onchange="toggleSeccion(this, 'seccion-nombres-anteriores')">
+                                            <option></option>
+                                            <option value="no">No</option>
+                                            <option value="si">Sí</option>
+                                    </select>
+                                    
+                                    <div id="seccion-nombres-anteriores" class="mt-3" style="display: none;">
+                                        <div class="nombres-dinamicos">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" 
+                                                       placeholder="Nombre anterior completo">
+                                                <button class="btn btn-outline-danger" 
+                                                        onclick="eliminarCampo(this)">✖</button>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-secondary" 
+                                                onclick="agregarCampoNombre()">+ Agregar otro nombre</button>
+                                    </div>
+                                </div>
+                    
+                                <!-- Cambio de Nombre -->
+                                <div class="mb-4">
+                                    <label class="form-label">¿Desea cambiarse el nombre?</label>
+                                    <select class="form-select" id="cambioNombre" 
+                                            onchange="toggleSeccion(this, 'seccion-cambio-nombre')">
+                                            <option></option>
+                                            <option value="no">No</option>
+                                            <option value="si">Sí</option>
+                                    </select>
+                                    <small class="form-text text-muted">USCIS permite cambiar nombre/apellidos sin costo adicional al naturalizarse</small>
+                                    
+                                    <div id="seccion-cambio-nombre" class="mt-3" style="display: none;">
+                                        <input type="text" class="form-control mt-2" 
+                                               placeholder="Nuevo nombre completo">
+                                    </div>
+                                </div>
+                    
+                                <!-- Información de Identificación -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Número de Residencia (A-Number)</label>
+                                        <input type="number" class="form-control" 
+                                               placeholder="9 dígitos sin guiones">
+                                        <small class="form-text text-muted">En su tarjeta de residencia como 'USCIS#'</small>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha de Residencia</label>
+                                        <input type="date" class="form-control">
+                                        <small class="form-text text-muted">En su tarjeta como 'Resident Since'</small>
+                                    </div>
+                                </div>
+                    
+                                <!-- Información de Contacto -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha de Nacimiento</label>
+                                        <input type="date" class="form-control" required>
+                                                            
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label">Número de Seguro Social (SSN)</label>
+                                        <input type="number" class="form-control" 
+                                               pattern="\d{9}" placeholder="9 dígitos sin guiones">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label">Número de Teléfono</label>
+                                        <input type="tel" class="form-control" 
+                                               placeholder="No utilice guiones">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label">Correo Electrónico</label>
+                                        <input type="email" class="form-control" 
+                                               placeholder="usuario@dominio.com">
+                                    </div>
+                                </div>
+                    
+                                <!-- Características Físicas -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Sexo</label>
+                                        <select class="form-select" required>
+                                            <option></option>
+                                            <option value="f">Femenino</option>
+                                            <option value="m">Masculino</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <label class="form-label">Etnia</label>
+                                        <select class="form-select">
+                                            <option></option>
+                                            <option value="hispano">Hispano/Latino </option>
+                                            <option value="no-hispano">No Hispano</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <label class="form-label">Raza</label>
+                                        <select class="form-select">
+                                            <option></option>
+                                            <option value="blanca">Blanca</option>
+                                            <option value="negra">Negra/Afroamericana</option>
+                                            <option value="asiatica">Asiática</option>
+                                        </select>
+                                    </div>
+                                </div>
+                    
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Altura (pies/pulg)</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" placeholder="Pies" min="3" max="7">
+                                            <input type="number" class="form-control" placeholder="Pulg" min="0" max="11">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <label class="form-label">Peso (libras)</label>
+                                        <input type="number" class="form-control" placeholder="Libras">
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <label class="form-label">Color de Ojos</label>
+                                        <select class="form-select">
+                                            <option></option>
+                                            <option>Negro</option>
+                                            <option>Azul</option>
+                                            <option>Marrón/Pardo</option>
+                                            <option>Gris</option>
+                                            <option>Miel</option>
+                                            <option>Otro</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-3">
+                                        <label class="form-label">Color de Cabello</label>
+                                        <select class="form-select">
+                                            <option></option>
+                                            <option>Calvo</option>
+                                            <option>Negro</option>
+                                            <option>Rubio</option>
+                                            <option>Gris</option>
+                                            <option>Rojo</option>
+                                            <option>Blanco</option>
+                                            <option>Marrón/Carmelita</option>
+                                            <option>Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                    
+                                <!-- Nacionalidad -->
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">País de Nacimiento</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nacionalidad Actual</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                    
+                                <!-- Navegación -->
+                                <div class="d-flex justify-content-end mt-5">
+                                    <button class="btn btn-primary" 
+                                    onclick="validarAntesDeAvanzar('direccionActual')">
+                                        Siguiente →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dirección Actual -->
+                    <div id="direccionActual" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">🏠 Dirección Actual</h3>
+                    
+                                <!-- Dirección Principal -->
+                                <div class="row g-3 mb-4">
+                                    <!-- Fila 1 -->
+                                    <div class="col-md-8">
+                                        <label class="form-label">Calle y Número*</label>
+                                        <input type="text" class="form-control" required 
+                                               placeholder="Ej: 123 Main St">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Apt/Suite</label>
+                                        <input type="text" class="form-control" 
+                                               placeholder="Ej: Apt 4B">
+                                    </div>
+                                    
+                                    <!-- Fila 2 -->
+                                    <div class="col-md-5">
+                                        <label class="form-label">Ciudad*</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Estado*</label>
+                                        <input type="text" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Código Postal*</label>
+                                        <input type="text" class="form-control" pattern="\d{5}" 
+                                               placeholder="5 dígitos" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Desde cuando vive aquí*</label>
+                                        <input type="date" class="form-control" id="fecha-inicio-direccion" 
+                                               max="2024-06-01" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Hasta</label>
+                                        <input type="text" class="form-control" value="Presente" readonly>
+                                    </div>
+                                
+                                </div>
+                    
+                                <!-- Dirección de Correspondencia -->
+                                <div class="mb-4">
+                                    <label class="form-label">¿Quiere recibir la correspondencia de USCIS en una dirección diferente?</label>
+                                    <select class="form-select" id="direccionCorrespondencia" required
+                                            onchange="toggleDireccionCorrespondencia(this)">
+                                            <option value="" selected disabled>-- Seleccione una opción --</option>
+                                        <option value="si">Sí</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                    
+                                <!-- Sección Condicional -->
+                                <div id="seccion-direccion-correspondencia" style="display: none;">
+                                    <div class="border-top pt-3">
+                                        <h5 class="mb-3">📬 Dirección de Correspondencia</h5>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">A nombre de</label>
+                                            <input type="text" class="form-control" 
+                                                   placeholder="Ej: María García López">
+                                        </div>
+                    
+                                        <div class="row g-3 mb-4">
+                                            <!-- Fila 1 -->
+                                            <div class="col-md-8 required-correspondence">
+                                                <label class="form-label">Calle y Número*</label>
+                                                <input type="text" class="form-control" 
+                                                       placeholder="Ej: 456 Oak Ave">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Apt/Suite</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            
+                                            <!-- Fila 2 -->
+                                            <div class="col-md-5 required-correspondence">
+                                                <label class="form-label">Ciudad*</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-md-4 required-correspondence">
+                                                <label class="form-label">Estado*</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-md-3 required-correspondence">
+                                                <label class="form-label">Código Postal*</label>
+                                                <input type="number" class="form-control" pattern="\d{5}" 
+                                                       placeholder="5 dígitos">
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                
+                                
+                                
+                                <!-- Navegación -->
+                                <div class="d-flex justify-content-between mt-5">
+                                    <button class="btn btn-secondary" 
+                                            onclick="mostrarSeccion('datosPersonales')">
+                                        ← Anterior
+                                    </button>
+                                    <button class="btn btn-primary" 
+                                            onclick="validarAntesDeAvanzar('direccionesAnteriores')">
+                                        Siguiente →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección Direcciones Anteriores -->
+                    <div id="direccionesAnteriores" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">🏚️ Direcciones Anteriores</h3>
+                                <p class="fst-italic text-muted">Debe proveer las direcciones en donde ha vivido en los últimos 5 años</p>
+                                
+                                <!-- Contenedor direcciones dinámicas -->
+                                <div id="contenedor-direcciones" class="mb-4"></div>
+
+                                <!-- Botón agregar -->
+                                <button type="button" class="btn btn-sm btn-secondary mb-3" 
+                                        onclick="agregarDireccionAnterior()">
+                                    + Agregar Dirección Anterior
+                                </button>
+
+                                <!-- Plantilla dirección (hidden) -->
+                                <template id="plantilla-direccion">
+                                    <div class="direccion-item border-bottom pb-3 mb-3">
+                                        <!-- Fila 1 - Calle y Apt -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Calle y Número*" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Apt/Suite">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Fila 2 - Ciudad, Estado, ZIP -->
+                                        <div class="row g-3 mb-3">
+                                            <div class="col-md-5">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Ciudad*" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Estado*" required>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Código Postal*" pattern="\d{5}" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Fila 3 - Fechas y botón eliminar -->
+                                        <div class="row g-3 align-items-end">
+                                            <div class="col-md-5">
+                                                <label class="form-label">Desde*</label>
+                                                <input type="date" class="form-control" 
+                                                    max="2024-06-01" required>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="form-label">Hasta*</label>
+                                                <input type="date" class="form-control" 
+                                                    max="2024-06-01" required>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="btn btn-danger w-100" 
+                                                        onclick="eliminarDireccion(this)">
+                                                    ✖ Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Navegación -->
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button class="btn btn-secondary" 
+                                            onclick="mostrarSeccion('direccionActual')">
+                                        ← Anterior
+                                    </button>
+                                    <button class="btn btn-primary" 
+                                            onclick="validarAntesDeAvanzar('estadoCivil')">
+                                        Siguiente →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección Estado Civil -->
+                    <div id="estadoCivil" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">💍 Estado Civil</h3>
+                                
+                                <!-- Estado Civil Actual -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Estado civil actual*</label>
+                                        <select id="estadoCivilActual" class="form-control" onchange="mostrarSeccionConyuge(this.value)" required>
+                                            <!-- Opciones se llenarán dinámicamente por JS -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Sección Cónyuge (condicional) -->
+                                <div id="seccionConyuge" style="display: none;">
+                                    <h5 class="mb-3" id="tituloConyuge">Datos del Esposo/Esposa</h5>
+                                    
+                                    <!-- Datos Básicos -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label label-conyuge" data-original="Nombre completo de su CONYUGE*"></label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label label-conyuge" data-original="¿Cuántas veces se ha casado su CONYUGE?*"></label>
+                                            <input type="number" class="form-control" min="0" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label label-conyuge" data-original="Fecha de nacimiento de su CONYUGE*"></label>
+                                            <input type="date" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label label-conyuge" data-original="Fecha de matrimonio con su CONYUGE*"></label>
+                                            <input type="date" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Dirección -->
+                                    <div class="mb-4">
+                                        <label class="form-label label-conyuge" data-original="Dirección completa de su CONYUGE (si no vive con usted)"></label>
+                                        <input type="text" class="form-control" placeholder="Ej: Calle, Ciudad, Estado, Código Postal">
+                                    </div>
+
+                                    <!-- Estatus Legal -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <label class="form-label label-conyuge" data-original="Estatus legal de su CONYUGE*"></label>
+                                            <select class="form-select" id="estatusLegalConyuge" onchange="mostrarCamposAdicionales(this.value)" required>
+                                                <option value="">Seleccionar...</option>
+                                                <option value="residente">Residente permanente</option>
+                                                <option value="ciudadano">Ciudadano estadounidense</option>
+                                                <option value="noResidente">No vive en USA</option>
+                                                <option value="sinResidencia">Vive en USA sin residencia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campos Condicionales -->
+                                    <div id="camposResidente" style="display: none;">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label label-conyuge" data-original="Número de residencia de su CONYUGE (A-Number)*"></label>
+                                                <input type="text" class="form-control" placeholder="Ej: A123456789">
+                                                <small class="form-text text-muted">Lo encontrará en su tarjeta de residencia como 'USCIS#'</small>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label label-conyuge" data-original="Fecha en que su CONYUGE se hizo residente*"></label>
+                                                <input type="date" class="form-control">
+                                                <small class="form-text text-muted">"Resident Since" en la tarjeta de residencia</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="camposCiudadano" style="display: none;">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label label-conyuge" data-original="Fecha en que su CONYUGE se hizo ciudadano*"></label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Navegación -->
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button class="btn btn-secondary" onclick="mostrarSeccion('direccionesAnteriores')">← Anterior</button>
+                                    <button class="btn btn-primary" onclick="validarYAvanzar()">Siguiente →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hijos -->
+                    <div id="hijos" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">👶 Hijos (En construcción)</h3>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-secondary" 
+                                            onclick="mostrarSeccion('estadoCivil')">← Anterior</button>
+                                    <button class="btn btn-primary" 
+                                            onclick="mostrarSeccion('empleosYestudios')">Siguiente →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empleos y Estudios -->
+                    <div id="empleosYestudios" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">💼 Empleos y Estudios (En construcción)</h3>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-secondary" 
+                                            onclick="mostrarSeccion('hijos')">← Anterior</button>
+                                    <button class="btn btn-primary" 
+                                            onclick="mostrarSeccion('viajes')">Siguiente →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Viajes -->
+                    <div id="viajes" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">✈️ Viajes (En construcción)</h3>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-secondary" 
+                                            onclick="mostrarSeccion('empleosYestudios')">← Anterior</button>
+                                    <button class="btn btn-primary" 
+                                            onclick="mostrarSeccion('resumen')">Siguiente →</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen -->
+                    <div id="resumen" class="seccion-formulario d-none">
+                        <div class="card shadow mt-4">
+                            <div class="card-body">
+                                <h3 class="mb-4">📋 Resumen (En construcción)</h3>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-secondary" 
+                                            onclick="mostrarSeccion('viajes')">← Anterior</button>
+                                    <button class="btn btn-success" 
+                                            onclick="alert('Enviando formulario...')">Enviar Solicitud</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function mostrarSeccion(idSeccion) {
+            // Limpiar errores anteriores
+            document.querySelectorAll('.is-invalid').forEach(elemento => {
+                elemento.classList.remove('is-invalid');
+            });
+            
+            // Ocultar aviso legal
+            document.getElementById('aviso').classList.add('d-none');
+            
+            // Mostrar contenedor principal
+            const formularioPrincipal = document.getElementById('formulario-principal');
+            formularioPrincipal.classList.remove('d-none');
+            
+            // Ocultar todas las secciones del formulario
+            document.querySelectorAll('.seccion-formulario').forEach(seccion => {
+                seccion.classList.add('d-none');
+            });
+            
+            // Mostrar sección objetivo
+            const seccionObjetivo = document.getElementById(idSeccion);
+            seccionObjetivo.classList.remove('d-none');
+            
+            // Enfocar primer campo interactivo
+            setTimeout(() => {
+                const primerCampo = seccionObjetivo.querySelector(
+                    'input:not(:disabled), select:not(:disabled), textarea:not(:disabled)'
+                );
+                
+                if (primerCampo) {
+                    // Scroll suave + enfoque
+                    primerCampo.scrollIntoView({
+                        behavior: 'auto',
+                        block: 'center'
+                    });
+                    primerCampo.focus({ preventScroll: true }); // Evitar scroll doble
+                }
+            }, 10); // Pequeño delay para sincronizar animaciones
+
+            // Event listeners para limpiar errores (dejar fuera del ciclo para evitar duplicados)
+            const campos = document.querySelectorAll('input, select');
+            campos.forEach(campo => {
+                campo.removeEventListener('input', limpiarError); // Limpiar listeners previos
+                campo.addEventListener('input', limpiarError);
+            });
+        }
+
+
+        // Función separada para mejor mantenibilidad
+        function limpiarError(e) {
+            if (e.target.value.trim() !== '') {
+                e.target.classList.remove('is-invalid');
+            }
+        }
+
+        // Funciones para manejar campos dinámicos
+        function toggleSeccion(select, idSeccion) {
+            const seccion = document.getElementById(idSeccion);
+            seccion.style.display = select.value === 'si' ? 'block' : 'none';
+        }
+
+        function agregarCampoNombre() {
+            const contenedor = document.querySelector('.nombres-dinamicos');
+            const nuevoCampo = document.createElement('div');
+            nuevoCampo.className = 'input-group mb-2';
+            nuevoCampo.innerHTML = `
+                <input type="text" class="form-control" placeholder="Nombre anterior completo">
+                <button class="btn btn-outline-danger" onclick="eliminarCampo(this)">✖</button>
+            `;
+            contenedor.appendChild(nuevoCampo);
+        }
+
+        function eliminarCampo(boton) {
+            boton.closest('.input-group').remove();
+        }
+
+        function validarAntesDeAvanzar(seccionDestino) {
+            const seccionActual = document.querySelector('.seccion-formulario:not(.d-none)');
+            const inputsRequeridos = seccionActual.querySelectorAll('[required]:not(:disabled)');
+            let valido = true;
+            let primerInvalido = null;
+
+            // Resetear errores
+            inputsRequeridos.forEach(input => input.classList.remove('is-invalid'));
+
+            // Validar campos
+            inputsRequeridos.forEach(input => {
+                if(!input.value.trim() || (input.validity && !input.checkValidity())) {
+                    input.classList.add('is-invalid');
+                    if(!primerInvalido) primerInvalido = input;
+                    valido = false;
+                }
+            });
+
+            if(!valido) {
+                // Scroll al primer campo inválido
+                primerInvalido.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // Enfocar el campo
+                primerInvalido.focus();
+                
+                // Mostrar alerta
+                const alerta = document.createElement('div');
+                alerta.className = 'alert alert-danger mt-3';
+                alerta.innerHTML = '❌ Complete los campos requeridos señalados';
+                seccionActual.prepend(alerta);
+                setTimeout(() => alerta.remove(), 3000);
+                
+                return false;
+            }
+            
+            mostrarSeccion(seccionDestino);
+            return true;
+        }
+
+        // Modificar el evento onchange de dirección de correspondencia:
+        function toggleDireccionCorrespondencia(select) {
+            const seccion = document.getElementById('seccion-direccion-correspondencia');
+            const camposRequeridos = seccion.querySelectorAll('.required-correspondence input, .required-correspondence select');
+            const aptSuite = seccion.querySelector('.col-md-4:not(.required-correspondence) input');
+
+            if(select.value === 'si') {
+                seccion.style.display = 'block';
+                camposRequeridos.forEach(campo => {
+                    campo.disabled = false;
+                    campo.required = true;
+                });
+                aptSuite.disabled = false;
+                aptSuite.required = false; // Apt/Suite sigue siendo opcional
+            } else {
+                seccion.style.display = 'none';
+                camposRequeridos.forEach(campo => {
+                    campo.disabled = true;
+                    campo.required = false;
+                    campo.value = '';
+                });
+                aptSuite.value = '';
+            }
+        }
+    
+        // Contador de direcciones
+        let contadorDirecciones = 0;
+
+        function agregarDireccionAnterior() {
+            const contenedor = document.getElementById('contenedor-direcciones');
+            const plantilla = document.getElementById('plantilla-direccion');
+            const clone = plantilla.content.cloneNode(true);
+            
+            // Asignar ID único
+            const nuevaDireccion = clone.querySelector('.direccion-item');
+            nuevaDireccion.id = `direccion-${contadorDirecciones++}`;
+            
+            contenedor.appendChild(clone);
+        }
+
+        function eliminarDireccion(boton) {
+            boton.closest('.direccion-item').remove();
+        }
+    
+        // Variables globales
+            let generoAplicante = ''; // Se establecerá desde datos personales
+            let conyugeTitulo = '';
+
+            
+
+            // Establecer género desde datos personales
+            function setGenero(sexo) {
+                generoAplicante = sexo;
+                conyugeTitulo = sexo === 'femenino' ? 'esposo' : 'esposa';
+                actualizarOpcionesEstadoCivil();
+                actualizarLabelsConyuge();
+            }
+
+            // Actualizar opciones del dropdown de estado civil
+            function actualizarOpcionesEstadoCivil() {
+                const sufijo = generoAplicante === 'femenino' ? 'a' : 'o';
+                document.getElementById('estadoCivilActual').innerHTML = `
+                    <option value="">Seleccionar...</option>
+                    <option value="soltero">Nunca casad${sufijo}</option>
+                    <option value="casado">Casad${sufijo}</option>
+                    <option value="divorciado">Divorciad${sufijo}</option>
+                    <option value="viudo">Viud${sufijo}</option>
+                    <option value="separado">Separad${sufijo}</option>
+                `;
+            }
+
+            // Actualizar todos los labels dinámicos
+            function actualizarLabelsConyuge() {
+                document.querySelectorAll('.label-conyuge').forEach(label => {
+                    const textoOriginal = label.dataset.original;
+                    label.textContent = textoOriginal.replace('CONYUGE', conyugeTitulo);
+                });
+                document.getElementById('tituloConyuge').textContent = `Datos del ${conyugeTitulo}`;
+            }
+
+            // Mostrar/ocultar sección cónyuge
+            function mostrarSeccionConyuge(estado) {
+                const seccion = document.getElementById('seccionConyuge');
+                seccion.style.display = ['casado', 'separado'].includes(estado) ? 'block' : 'none';
+            }
+
+            // Mostrar campos adicionales según estatus legal
+            function mostrarCamposAdicionales(estatus) {
+                document.getElementById('camposResidente').style.display = estatus === 'residente' ? 'block' : 'none';
+                document.getElementById('camposCiudadano').style.display = estatus === 'ciudadano' ? 'block' : 'none';
+            }
+
+            // Validación antes de avanzar
+            function validarYAvanzar() {
+                const estadoCivil = document.getElementById('estadoCivilActual').value;
+                const necesitaDatosConyuge = ['casado', 'separado'].includes(estadoCivil);
+                
+                if (!estadoCivil) {
+                    alert('Seleccione su estado civil');
+                    return;
+                }
+                
+                if (necesitaDatosConyuge) {
+                    const camposRequeridos = document.querySelectorAll('#seccionConyuge [required]');
+                    let valido = true;
+                    
+                    camposRequeridos.forEach(campo => {
+                        if (!campo.value.trim()) {
+                            campo.classList.add('is-invalid');
+                            valido = false;
+                        }
+                    });
+                    
+                    if (!valido) {
+                        alert('Complete todos los campos requeridos del cónyuge');
+                        return;
+                    }
+                }
+                
+                mostrarSeccion('hijos');
+            }
+    </script>
+</body>
+</html>
